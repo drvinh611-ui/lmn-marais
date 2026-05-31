@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Lao Màng Não — Tiêu chuẩn BYT 2024</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f4f0;
+    --bg3: #eeecea;
+    --text: #1a1a18;
+    --text2: #6b6a65;
+    --text3: #9b9a95;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.25);
+    --blue50: #E6F1FB;
+    --blue100: #B5D4F4;
+    --blue400: #378ADD;
+    --blue600: #185FA5;
+    --blue800: #0C447C;
+    --green50: #EAF3DE;
+    --green800: #27500A;
+    --amber50: #FAEEDA;
+    --amber100: #FAC775;
+    --amber800: #633806;
+    --orange50: #FED6AD;
+    --orange800: #4A1B0C;
+    --red50: #FCEBEB;
+    --red400: #E24B4A;
+    --red600: #A32D2D;
+    --red800: #791F1F;
+    --teal50: #E1F5EE;
+    --teal800: #085041;
+    --r-md: 8px;
+    --r-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c;
+      --bg2: #2a2a28;
+      --bg3: #333330;
+      --text: #f0efea;
+      --text2: #a0a09a;
+      --text3: #6b6a65;
+      --border: rgba(255,255,255,0.12);
+      --border2: rgba(255,255,255,0.25);
+      --blue50: #042C53;
+      --blue100: #0C447C;
+      --blue400: #378ADD;
+      --blue800: #B5D4F4;
+      --green50: #173404;
+      --green800: #C0DD97;
+      --amber50: #412402;
+      --amber100: #633806;
+      --amber800: #FAC775;
+      --orange50: #4A1B0C;
+      --orange800: #FAC775;
+      --red50: #501313;
+      --red800: #F7C1C1;
+      --teal50: #04342C;
+      --teal800: #9FE1CB;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 160px;
+  }
+  .top-bar {
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    padding: 14px 16px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .top-bar h1 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .top-bar p { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .content { padding: 12px 16px; }
+  .section { margin-bottom: 14px; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0 4px 6px;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .criterion {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--r-lg);
+    border: 0.5px solid var(--border);
+    background: var(--bg);
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .criterion:active { opacity: 0.75; }
+  .criterion.selected { background: var(--blue50); border-color: var(--blue400); }
+  .criterion.selected-neg { background: var(--red50); border-color: var(--red400); }
+  .checkbox {
+    width: 22px; height: 22px; min-width: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+    margin-top: 1px;
+  }
+  .criterion.selected .checkbox { background: var(--blue400); border-color: var(--blue600); }
+  .criterion.selected-neg .checkbox { background: var(--red400); border-color: var(--red600); }
+  .criterion.selected .checkbox::after,
+  .criterion.selected-neg .checkbox::after {
+    content: '';
+    display: block;
+    width: 12px; height: 7px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-2px);
+  }
+  .crit-body { flex: 1; }
+  .crit-label { font-size: 13px; color: var(--text); line-height: 1.45; }
+  .criterion.selected .crit-label { color: var(--blue800); }
+  .criterion.selected-neg .crit-label { color: var(--red800); }
+  .badge {
+    font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px;
+    background: var(--bg2); color: var(--text2);
+    white-space: nowrap; margin-top: 3px; display: inline-block;
+  }
+  .criterion.selected .badge { background: var(--blue100); color: var(--blue800); }
+  .criterion.selected-neg .badge { background: var(--red50); color: var(--red800); }
+
+  /* Score footer */
+  .score-footer {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border2);
+    padding: 10px 16px 18px;
+    z-index: 20;
+  }
+  .score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .score-num { font-size: 42px; font-weight: 700; color: var(--text); min-width: 56px; line-height: 1; }
+  .score-info { flex: 1; }
+  .score-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .verdict {
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: var(--r-md);
+    display: inline-block;
+  }
+  .v-none { background: var(--bg2); color: var(--text2); }
+  .v-xacdinh { background: var(--red50); color: var(--red800); }
+  .v-khả-năng { background: var(--orange50); color: var(--orange800); }
+  .v-có-thể { background: var(--amber50); color: var(--amber800); }
+  .v-khong { background: var(--green50); color: var(--green800); }
+  .bar-track { background: var(--bg2); border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+  .bar-fill { height: 100%; border-radius: 4px; background: var(--blue400); transition: width 0.3s ease; }
+  .note-row { display: flex; align-items: flex-start; gap: 10px; }
+  .reset-btn {
+    font-size: 11px; color: var(--text2);
+    background: none; border: 0.5px solid var(--border2);
+    border-radius: var(--r-md); padding: 5px 12px;
+    cursor: pointer; white-space: nowrap; min-height: 30px;
+  }
+  .note-text { font-size: 11px; color: var(--text2); line-height: 1.5; flex: 1; }
+
+  /* Accordion for legend */
+  .legend-toggle {
+    font-size: 12px; color: var(--text2);
+    background: none; border: 0.5px solid var(--border);
+    border-radius: var(--r-md); padding: 6px 12px;
+    cursor: pointer; width: 100%; text-align: left;
+    margin-bottom: 10px; display: flex; justify-content: space-between;
+  }
+  .legend-toggle span { font-size: 11px; }
+  .legend-box {
+    display: none;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .legend-box.open { display: block; }
+  .legend-box b { color: var(--text); font-weight: 600; }
+  .legend-item { padding: 4px 0; border-bottom: 0.5px solid var(--border); }
+  .legend-item:last-child { border-bottom: none; }
+  .ref { text-align: center; font-size: 11px; color: var(--text3); padding: 4px 0 8px; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>Lao Màng Não — Tiêu chuẩn chẩn đoán BYT 2024</h1>
+  <p>Theo QĐ 162/QĐ-BYT · Chọn các tiêu chí có mặt ở bệnh nhân</p>
+</div>
+
+<div class="content">
+
+  <!-- Legend accordion -->
+  <button class="legend-toggle" onclick="toggleLegend()">
+    Phân loại chẩn đoán <span id="leg-arrow">▼ xem</span>
+  </button>
+  <div class="legend-box" id="legend-box">
+    <div class="legend-item"><b>Chẩn đoán xác định:</b> Có triệu chứng LMN + bằng chứng vi khuẩn trong DNT (AFB, nuôi cấy, sinh học phân tử dương tính); hoặc AFB(+) kèm mô bệnh học não phù hợp Lao.</div>
+    <div class="legend-item"><b>Có khả năng LMN:</b> Điểm <b>≥ 10</b> (không có CĐHA não) hoặc <b>≥ 12</b> (có CĐHA não), trong đó có ≥ 2 điểm từ tiêu chuẩn DNT hoặc CĐHA.</div>
+    <div class="legend-item"><b>Có thể LMN:</b> Điểm <b>6–9</b> (không có CĐHA) hoặc <b>6–11</b> (có CĐHA não).</div>
+    <div class="legend-item"><b>Không phải LMN:</b> Có chẩn đoán khác thay thế mà không có chẩn đoán xác định LMN, hoặc không có dấu hiệu đồng mắc hai bệnh thuyết phục.</div>
+  </div>
+
+  <!-- Lâm sàng -->
+  <div class="section">
+    <div class="section-title">Tiêu chuẩn lâm sàng</div>
+
+    <div class="criterion" data-score="4" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Diễn biến bệnh trên 05 ngày</div>
+        <div class="badge">+4 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="2" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Có một trong các triệu chứng nghi Lao: sút cân (hoặc chậm tăng cân ở trẻ nhỏ), ra mồ hôi đêm, ho kéo dài trên 02 tuần</div>
+        <div class="badge">+2 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="2" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Tiền sử có tiếp xúc ≥ 1 năm trở lại với bệnh nhân lao phổi có test Tuberculin hoặc IGRA dương tính (đối với trẻ dưới 10 tuổi)</div>
+        <div class="badge">+2 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Giảm sự tập trung</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Tổn thương dây thần kinh sọ</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Thay đổi tính tình</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DNT -->
+  <div class="section">
+    <div class="section-title">Tiêu chuẩn dịch não tủy</div>
+
+    <div class="criterion" data-score="1" data-has-csf="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Trong hoặc vàng nhạt</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" data-has-csf="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Tế bào từ 10 đến 500/mm³</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" data-has-csf="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Phần trăm lympho trên 50%</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" data-has-csf="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Protein trên 1 g/L</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" data-has-csf="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Glucose DNT dưới 50% glucose máu hoặc glucose DNT dưới 2,2 mmol/L</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CĐHA -->
+  <div class="section">
+    <div class="section-title">Tiêu chuẩn chẩn đoán hình ảnh sọ não</div>
+
+    <div class="criterion" data-score="1" data-has-img="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Giãn não thất</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="2" data-has-img="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Màng não đáy não ngấm thuốc cản quang</div>
+        <div class="badge">+2 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="2" data-has-img="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Nhồi máu não</div>
+        <div class="badge">+2 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="1" data-has-img="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">U lao như mô não</div>
+        <div class="badge">+1 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="2" data-has-img="1" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Màng não đáy não tăng tỷ trọng trước khi tiêm thuốc cản quang</div>
+        <div class="badge">+2 điểm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bằng chứng ngoài CNS -->
+  <div class="section">
+    <div class="section-title">Bằng chứng lao cơ quan khác</div>
+
+    <div class="criterion" data-score="2" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">X-quang thường quy nghi lao hoạt động: lao phổi = 2, lao kê = 4 <span style="font-size:11px;color:var(--text2)">(chọn mức phù hợp)</span></div>
+        <div style="display:flex;gap:6px;margin-top:4px;">
+          <button class="sub-btn" onclick="subToggle(event, this, 2)">Lao phổi +2</button>
+          <button class="sub-btn" onclick="subToggle(event, this, 4)">Lao kê +4</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="2" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">Bằng chứng lao cơ quan khác CT hoặc MRI hoặc Siêu âm</div>
+        <div class="badge">+2 điểm</div>
+      </div>
+    </div>
+
+    <div class="criterion" data-score="4" onclick="toggle(this)">
+      <div class="checkbox"></div>
+      <div class="crit-body">
+        <div class="crit-label">AFB hoặc nuôi cấy VKL (+) trong bệnh phẩm từ cơ quan khác: đờm, hạch, dịch rửa dạ dày, nước tiểu</div>
+        <div class="badge">+4 điểm</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ref">Theo QĐ 162/QĐ-BYT 2024 · Tham khảo tài liệu nước ngoài (Marais et al. 2010)</div>
+</div>
+
+<div class="score-footer">
+  <div class="score-row">
+    <div class="score-num" id="score-num">0</div>
+    <div class="score-info">
+      <div class="score-label">Tổng điểm</div>
+      <div class="verdict v-none" id="verdict">Chưa chọn tiêu chí</div>
+    </div>
+  </div>
+  <div class="bar-track"><div class="bar-fill" id="bar" style="width:0%"></div></div>
+  <div class="note-row">
+    <button class="reset-btn" onclick="resetAll()">Đặt lại</button>
+    <div class="note-text" id="note">Chọn tiêu chí có mặt để tính điểm và phân loại.</div>
+  </div>
+</div>
+
+<style>
+.sub-btn {
+  font-size: 11px; padding: 3px 9px;
+  border-radius: 20px; border: 0.5px solid var(--border2);
+  background: var(--bg2); color: var(--text2);
+  cursor: pointer;
+}
+.sub-btn.active { background: var(--blue400); color: white; border-color: var(--blue600); }
+</style>
+
+<script>
+var subScore = 0;
+var subActive = null;
+
+function subToggle(e, btn, score) {
+  e.stopPropagation();
+  var parent = btn.closest('.criterion');
+  if (subActive === btn) {
+    btn.classList.remove('active');
+    subActive = null;
+    subScore = 0;
+    parent.classList.remove('selected');
+    parent.dataset.score = score;
+  } else {
+    if (subActive) subActive.classList.remove('active');
+    btn.classList.add('active');
+    subActive = btn;
+    subScore = score;
+    parent.classList.add('selected');
+    parent.dataset.score = score;
+    parent.dataset.suboverride = score;
+  }
+  updateScore();
+}
+
+function toggle(el) {
+  if (el.querySelector('.sub-btn')) {
+    return;
+  }
+  var score = parseInt(el.dataset.score);
+  var isNeg = score < 0;
+  var cls = isNeg ? 'selected-neg' : 'selected';
+  el.classList.toggle(cls);
+  updateScore();
+}
+
+function updateScore() {
+  var total = 0;
+  var hasImg = false;
+  var csfPoints = 0;
+  var imgPoints = 0;
+
+  document.querySelectorAll('.criterion.selected, .criterion.selected-neg').forEach(function(e) {
+    total += parseInt(e.dataset.score);
+    if (e.dataset.hasImg) { hasImg = true; imgPoints += parseInt(e.dataset.score); }
+    if (e.dataset.hasCsf) { csfPoints += parseInt(e.dataset.score); }
+  });
+
+  if (subActive) {
+    var parent = subActive.closest('.criterion');
+    if (!parent.classList.contains('selected')) {
+      total -= parseInt(parent.dataset.score);
+    }
+  }
+
+  document.getElementById('score-num').textContent = total;
+  var pct = Math.max(0, Math.min(100, (total / 20) * 100));
+  document.getElementById('bar').style.width = pct + '%';
+
+  var v = document.getElementById('verdict');
+  var n = document.getElementById('note');
+
+  var els = document.querySelectorAll('.criterion.selected, .criterion.selected-neg');
+  if (els.length === 0 && !subActive) {
+    v.className = 'verdict v-none'; v.textContent = 'Chưa chọn tiêu chí';
+    n.textContent = 'Chọn tiêu chí có mặt để tính điểm và phân loại.';
+    return;
+  }
+
+  var csfOrImg = csfPoints + imgPoints;
+  var hasEnoughCsfImg = csfOrImg >= 2;
+
+  if (hasImg) {
+    if (total >= 12 && hasEnoughCsfImg) {
+      v.className = 'verdict v-khả-năng'; v.textContent = '≥ 12 + CĐHA — Có khả năng LMN';
+      n.textContent = 'Có chẩn đoán hình ảnh não, điểm ≥ 12: Có khả năng lao màng não.';
+    } else if (total >= 6) {
+      v.className = 'verdict v-có-thể'; v.textContent = '6–11 + CĐHA — Có thể LMN';
+      n.textContent = 'Có chẩn đoán hình ảnh não, điểm 6–11: Có thể lao màng não. Tiếp tục điều tra.';
+    } else {
+      v.className = 'verdict v-khong'; v.textContent = 'Ít khả năng LMN';
+      n.textContent = 'Điểm thấp. Cân nhắc chẩn đoán khác. Lưu ý: điểm thấp không loại trừ hoàn toàn.';
+    }
+  } else {
+    if (total >= 10 && hasEnoughCsfImg) {
+      v.className = 'verdict v-khả-năng'; v.textContent = '≥ 10, không CĐHA — Có khả năng LMN';
+      n.textContent = 'Không có CĐHA não, điểm ≥ 10 (≥ 2 điểm DNT): Có khả năng lao màng não.';
+    } else if (total >= 6) {
+      v.className = 'verdict v-có-thể'; v.textContent = '6–9, không CĐHA — Có thể LMN';
+      n.textContent = 'Không có CĐHA não, điểm 6–9: Có thể lao màng não. Cần thêm bằng chứng.';
+    } else {
+      v.className = 'verdict v-khong'; v.textContent = 'Ít khả năng LMN';
+      n.textContent = 'Điểm thấp. Cân nhắc chẩn đoán khác.';
+    }
+  }
+}
+
+function resetAll() {
+  document.querySelectorAll('.criterion.selected, .criterion.selected-neg').forEach(function(el) {
+    el.classList.remove('selected', 'selected-neg');
+  });
+  document.querySelectorAll('.sub-btn.active').forEach(function(b) { b.classList.remove('active'); });
+  subActive = null; subScore = 0;
+  updateScore();
+}
+
+function toggleLegend() {
+  var box = document.getElementById('legend-box');
+  var arrow = document.getElementById('leg-arrow');
+  box.classList.toggle('open');
+  arrow.textContent = box.classList.contains('open') ? '▲ ẩn' : '▼ xem';
+}
+</script>
+</body>
+</html>
